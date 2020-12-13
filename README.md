@@ -16,6 +16,14 @@ Outro problema são regiões planas, onde a avalição de todas as soluções pr
 
 O problema que será tratado com o algoritmo é o problema do caixeiro viajante. Suponha que temos um mapa de uma cidade onde é possível andar em linha reta entre quaisquer dois pontos de interesse da cidade. O desafio é encontrar uma permutação da ordem dos pontos de interesse que minimize a distância total percorrida, isto é, o menor caminho que liga todos os pontos, voltando para o ponto inicial.
 
+Vamos estar solucionando o caso para um país africano chamado Djibouti.
+
+![Djibouti](assets/Djibouti/map.jpg)
+
+Vamos estar usando os pontos de interesse da imagem abaixo:
+
+![Pontos de Interesse](assets/Djibouti/city-points.gif)
+
 ### Estado Inicial
 
 Para nos permitir obter soluções melhores, vamos tentar mais de um estado inicial. A ideia é que, ao tentar múltiplos pontos iniciais, eventualmente vamos escolher um na encosta do mínimo global. O estado inicial trivial, que é basicamente a ordem dos pontos de interesse que recebemos, não é tão ruim como estado inicial. Isso será visto mais adiante.
@@ -218,6 +226,96 @@ for i in range(10):
 
 ## Conclusão
 
-Com esse novo operador, as coisas ficaram muito melhores! Conseguimos reduções significativas, mas ainda assim, não foi o suficiente para encontrar a melhor solução. Também tivemos mais iterações, o que significa que o algoritmo ficou menos preso em máximos locais por ter mais opções.
+Com esse novo operador, as coisas ficaram muito melhores! Compare as primeiras melhores soluções encontradas com a solução ótima:
+
+![Solução Ótima](assets/Djibouti/best-path.gif)
+
+Conseguimos reduções significativas comparado com a melhor solução, mas ainda assim, não foi o suficiente para encontrar a melhor solução. Também tivemos mais iterações, o que significa que o algoritmo ficou menos preso em máximos locais por ter mais opções.
 
 Para conseguir resultados ainda melhores, vamos precisar de estados iniciais melhores, sorte, ou operadores melhores. Ou um algoritmo melhor. Tenho certeza que simulated annealing ou genetic algorithms teriam resultados melhores nessa situação. A dinâmica de poder piorar soluções para que uma melhor possa ser encontrada, para escapar de máximos locais, é algo que facilitaria muito a situação aqui.
+
+## Outras cidades
+
+Isso agora é um pouco além do escopo, mas estarei testando outro país: "Western Sahara".
+
+### Sahara do Oeste
+
+![Mapa](assets/WesternSahara/map.jpg)
+
+
+
+```python
+problem2 = parse("./assets/WesternSahara/euc-2d-nodes.tsp")
+
+for i in range(10):
+    initial = problem["point_list"][:]
+    shuffle(initial)
+
+    final, path = hill_climbing(initial, tsp.all_possible_swaps, tsp.evaluate, lambda x,y: x == y)
+    trajectory_eval = [-tsp.evaluate(t) for t in path]
+    plot(final, trajectory_eval, f"Solução Final {i + 1}\nDistância Total {-tsp.evaluate(final):.2f}\n{len(path)} iterações")
+```
+
+
+    
+![svg](assets/notebook/notebook_9_0.svg)
+    
+
+
+
+    
+![svg](assets/notebook/notebook_9_1.svg)
+    
+
+
+
+    
+![svg](assets/notebook/notebook_9_2.svg)
+    
+
+
+
+    
+![svg](assets/notebook/notebook_9_3.svg)
+    
+
+
+
+    
+![svg](assets/notebook/notebook_9_4.svg)
+    
+
+
+
+    
+![svg](assets/notebook/notebook_9_5.svg)
+    
+
+
+
+    
+![svg](assets/notebook/notebook_9_6.svg)
+    
+
+
+
+    
+![svg](assets/notebook/notebook_9_7.svg)
+    
+
+
+
+    
+![svg](assets/notebook/notebook_9_8.svg)
+    
+
+
+
+    
+![svg](assets/notebook/notebook_9_9.svg)
+    
+
+
+E a solução ótima desse país é:
+
+![Melhor Solução](assets/WesternSahara/best-path.gif)
